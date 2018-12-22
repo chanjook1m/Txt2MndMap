@@ -553,3 +553,71 @@ function svgString2Image(svgString, width, height, format, callback) {
 
   image.src = imgsrc;
 }
+
+const saveToTxt = document.querySelector("#saveToTxt");
+saveToTxt.addEventListener("click", saveToText);
+
+function saveToText() {
+  var text = document.getElementById("text-area").value;
+  text = text.replace(/\n/g, "\r\n"); // To retain the Line breaks.
+  var blob = new Blob([text], { type: "text/plain" });
+  var anchor = document.createElement("a");
+  anchor.download = "new-file.txt";
+  anchor.href = window.URL.createObjectURL(blob);
+  anchor.target = "_blank";
+  anchor.style.display = "none"; // just to be safe!
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+}
+
+var clickElem = function(elem) {
+  // Thx user1601638 on Stack Overflow (6/6/2018 - https://stackoverflow.com/questions/13405129/javascript-create-and-save-file )
+  var eventMouse = document.createEvent("MouseEvents");
+  eventMouse.initMouseEvent(
+    "click",
+    true,
+    false,
+    window,
+    0,
+    0,
+    0,
+    0,
+    0,
+    false,
+    false,
+    false,
+    false,
+    0,
+    null
+  );
+  elem.dispatchEvent(eventMouse);
+};
+var openFile = function(func) {
+  var dispFile = function(contents) {
+    document.getElementById("text-area").value = contents;
+  };
+  readFile = function(e) {
+    var file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var contents = e.target.result;
+      fileInput.func(contents);
+      document.body.removeChild(fileInput);
+    };
+    reader.readAsText(file);
+  };
+  fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.style.display = "none";
+  fileInput.onchange = readFile;
+  fileInput.func = dispFile;
+  document.body.appendChild(fileInput);
+  clickElem(fileInput);
+};
+
+const opnFile = document.querySelector("#open-file");
+opnFile.addEventListener("click", openFile);
