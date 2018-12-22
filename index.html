@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>Force based label placement</title>
     <link rel="stylesheet" href="index.css" />
+    <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
   </head>
   <body>
@@ -11,7 +12,9 @@
       <textarea name="" id="text-area" cols="40" rows="32"></textarea>
     </div>
 
-    <div class="split right"></div>
+    <div class="split right">
+      <button id="saveButton">Export my D3 visualization to PNG</button>
+    </div>
 
     <script type="text/javascript" charset="utf-8" src="index.js"></script>
   </body>
