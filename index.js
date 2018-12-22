@@ -24,7 +24,7 @@ var labelAnchorLinks = [];
 var links = [];
 const txtBox = document.querySelector("#text-area");
 
-const str = "aasdfasfasdfasdf";
+const str = "aasdfa sfasdfasdfad klfjasdfkjlas fjklasdjfkja sdkfjasdj fkjsdkf";
 const str2 = "zzz";
 txtBox.value = str + "\n" + str2;
 
@@ -162,6 +162,49 @@ link
   .attr("class", "link")
   .style("stroke", "#CCC");
 
+function wrap(text, width) {
+  text.each(function() {
+    var text = d3.select(this),
+      words = text
+        .text()
+        .split(/\s+/)
+        .reverse(),
+      word,
+      line = [],
+      lineNumber = 0, //<-- 0!
+      lineHeight = 1.2, // ems
+      x = text.attr("x"), //<-- include the x!
+      y = text.attr("y"),
+      dy = text.attr("dy") ? text.attr("dy") : 0; //<-- null check
+    tspan = text
+      .text(null)
+      .append("tspan")
+      .attr("x", x)
+      .attr("y", y)
+      .attr("dy", dy + "em");
+
+    while ((word = words.pop())) {
+      line.push(word);
+      tspan.text(line.join(" "));
+
+      if (tspan.node().getComputedTextLength() > width) {
+        console.log(line);
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text
+          .append("tspan")
+          .attr("x", 1)
+          .attr("y", 1)
+          .attr("dy", ++lineNumber * lineHeight + dy + "em")
+          .text(word);
+        console.log();
+      }
+    }
+  });
+}
+
+var x = d3.scale.ordinal().rangeRoundBands([0, w], 0.1, 0.3);
 var node = vis.selectAll("g.node").data(force.nodes());
 node
   .enter()
@@ -178,7 +221,6 @@ node
   })
   .style("stroke-width", 3);
 node.call(force.drag);
-
 //console.log(nodes[node[0].length-1].color)
 
 //node.exit().remove();
@@ -207,16 +249,11 @@ anchorNode
   .text(function(d, i) {
     return i % 2 == 0 ? "" : d.node.label;
   })
+  .call(wrap, 50)
   .style("fill", "#d63031")
   .style("font-family", "Lucida Console, Monaco, monospace")
   .style("font-weight", "bold")
   .style("font-size", 15);
-
-vis
-  .selectAll("g.anchorNode")
-  .data(force2.nodes())
-  .exit()
-  .remove();
 
 var updateLink = function() {
   this.attr("x1", function(d) {
@@ -249,20 +286,22 @@ force.on("tick", function() {
       d.x = d.node.x;
       d.y = d.node.y;
     } else {
-      var b = this.childNodes[1].getBBox();
+      if (this.childNodes[1]) {
+        var b = this.childNodes[1].getBBox();
 
-      var diffX = d.x - d.node.x;
-      var diffY = d.y - d.node.y;
+        var diffX = d.x - d.node.x;
+        var diffY = d.y - d.node.y;
 
-      var dist = Math.sqrt(diffX * diffX + diffY * diffY);
+        var dist = Math.sqrt(diffX * diffX + diffY * diffY);
 
-      var shiftX = (b.width * (diffX - dist)) / (dist * 2);
-      shiftX = Math.max(-b.width, Math.min(0, shiftX));
-      var shiftY = 5;
-      this.childNodes[1].setAttribute(
-        "transform",
-        "translate(" + shiftX + "," + shiftY + ")"
-      );
+        var shiftX = (b.width * (diffX - dist)) / (dist * 2);
+        shiftX = Math.max(-b.width, Math.min(0, shiftX));
+        var shiftY = 5;
+        this.childNodes[1].setAttribute(
+          "transform",
+          "translate(" + shiftX + "," + shiftY + ")"
+        );
+      }
     }
   });
 
@@ -402,6 +441,7 @@ txtBox.addEventListener("keyup", function(e) {
     .text(function(d, i) {
       return i % 2 == 0 ? "" : d.node.label;
     })
+    .call(wrap, 50)
     .style("fill", "#d63031")
     .style("font-family", "Lucida Console, Monaco, monospace")
     .style("font-size", 15)
@@ -621,3 +661,12 @@ var openFile = function(func) {
 
 const opnFile = document.querySelector("#open-file");
 opnFile.addEventListener("click", openFile);
+
+const newArea = document.querySelector("#new-textarea");
+newArea.addEventListener("click", resetTxtArea);
+
+function resetTxtArea() {
+  txtBox.value = "";
+  let event = new Event("keyup");
+  txtBox.dispatchEvent(event);
+}
