@@ -13,7 +13,7 @@ var drag = d3.behavior
 
 var vis = d3
   .select(".right")
-  .append("svg:svg")
+  .append("svg")
   .attr("width", w)
   .attr("height", h)
   .call(drag)
@@ -94,6 +94,7 @@ for (var i = 0; i < nodes.length; i++) {
   });
 }
 
+// drag.js
 function dragstarted(d) {
   d3.event.sourceEvent.stopPropagation();
   d3.event.sourceEvent.preventDefault;
@@ -340,12 +341,19 @@ txtBox.addEventListener("keyup", function(e) {
   if (e.keyCode == 65 && e.ctrlKey) {
     e.target.select();
   }
-  d3.selectAll("svg > *").remove();
+  d3.selectAll(".right > *").remove();
   nodes = [];
   links = [];
   labelAnchors = [];
   labelAnchorLinks = [];
 
+  vis = d3
+    .select(".right")
+    .append("svg")
+    .attr("width", w)
+    .attr("height", h)
+    .call(drag)
+    .append("g");
   var lines = txtBox.value.split("\n");
   lines.forEach(function(line, index) {
     if (nodes[index]) nodes[index].label = line;
