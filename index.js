@@ -25,9 +25,18 @@ var labelAnchorLinks = [];
 var links = [];
 const txtBox = document.querySelector("#text-area");
 
-const str = "aasdfa sfasdfasdfad klfjasdfkjlas fjklasdjfkja sdkfjasdj fkjsdkf";
-const str2 = "zzz";
-txtBox.value = str + "\n" + str2;
+const str =
+  "aasdfa sfasdfasdfad klfjasdfkjlas fjklasdjfkja sdkfjasdj fkjsdkf\nzzz";
+let setting;
+try {
+  setting = JSON.parse(localStorage.getItem("documentContent"));
+  txtBox.value = setting;
+} catch (exception) {
+  // Ignored
+}
+if (!setting || setting == "") {
+  txtBox.value = str;
+}
 
 var colors = [
   "#2d3436",
@@ -351,6 +360,13 @@ txtBox.addEventListener("keyup", function(e) {
   if (e.keyCode == 65 && e.ctrlKey) {
     e.target.select();
   }
+
+  try {
+    localStorage.setItem("documentContent", JSON.stringify(txtBox.value));
+  } catch (exception) {
+    console.error(exeption);
+  }
+
   d3.selectAll(".right > *").remove();
   nodes = [];
   links = [];
@@ -735,5 +751,5 @@ function resetTxtArea() {
 }
 
 // TODO
-// 1. text fit in rect
-// 2. prevent rect overlap = text overlap
+// 1. refactor
+// 2. push on repository
