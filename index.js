@@ -13,10 +13,11 @@ var drag = d3.behavior
 
 var vis = d3
   .select(".right")
-  .append("svg")
+  .append("svg:svg")
   .attr("width", w)
   .attr("height", h)
-  .call(drag);
+  .call(drag)
+  .append("g");
 
 var nodes = [];
 var labelAnchors = [];
@@ -183,12 +184,14 @@ function wrap(text, width) {
       .attr("y", y)
       .attr("dy", dy + "em");
 
+    // if last element is "", delete it
+    if (words[words.length - 1] === "") words.pop(); //
+    //console.log(words);
     while ((word = words.pop())) {
       line.push(word);
       tspan.text(line.join(" "));
 
       if (tspan.node().getComputedTextLength() > width) {
-        console.log(line);
         line.pop();
         tspan.text(line.join(" "));
         line = [word];
@@ -235,25 +238,45 @@ var anchorLink = vis
   .attr("class", "anchorLink")
   .style("stroke", "#999");
 
+var paddingLeftRight = 30; // adjust the padding values depending on font and font size
+var paddingTopBottom = 5;
 var anchorNode = vis.selectAll("g.anchorNode").data(force2.nodes());
 anchorNode
   .enter()
-  .append("svg:g")
+  .append("g")
   .attr("class", "anchorNode");
 anchorNode
-  .append("svg:circle")
+  .append("circle")
   .attr("r", 0)
   .style("fill", "#FFF");
 anchorNode
-  .append("svg:text")
+  .append("text")
   .text(function(d, i) {
+    console.log(d);
     return i % 2 == 0 ? "" : d.node.label;
   })
-  .call(wrap, 50)
-  .style("fill", "#d63031")
+  .call(wrap, 100)
+  .call(getBB)
+  //.style("fill", "#d63031")
   .style("font-family", "Lucida Console, Monaco, monospace")
   .style("font-weight", "bold")
-  .style("font-size", 15);
+  .style("font-size", 15)
+  .style("fill", "black");
+// anchorNode
+//   .insert("rect", "text")
+//   .attr("width", function(d) {
+//     return d.bbox.width + paddingLeftRight;
+//   })
+//   .attr("height", function(d) {
+//     return d.bbox.height + paddingTopBottom;
+//   })
+//   .style("fill", "red");
+
+function getBB(selection) {
+  selection.each(function(d) {
+    d.bbox = this.getBBox();
+  });
+}
 
 var updateLink = function() {
   this.attr("x1", function(d) {
@@ -277,6 +300,7 @@ var updateNode = function() {
 };
 
 force.on("tick", function() {
+  //force.start();
   force2.start();
 
   node.call(updateNode);
@@ -441,7 +465,7 @@ txtBox.addEventListener("keyup", function(e) {
     .text(function(d, i) {
       return i % 2 == 0 ? "" : d.node.label;
     })
-    .call(wrap, 50)
+    .call(wrap, 100)
     .style("fill", "#d63031")
     .style("font-family", "Lucida Console, Monaco, monospace")
     .style("font-size", 15)
@@ -454,6 +478,7 @@ txtBox.addEventListener("keyup", function(e) {
     .remove();
 
   force.on("tick", function() {
+    //force.start();
     force2.start();
 
     node.call(updateNode);
@@ -487,7 +512,7 @@ txtBox.addEventListener("keyup", function(e) {
   });
 });
 
-// Set-up the export button
+// save as png
 d3.select("#saveButton").on("click", function() {
   var svgString = getSVGString(vis.node());
   svgString2Image(svgString, 2 * w, 2 * h, "png", save); // passes Blob and filesize String to the callback
@@ -594,6 +619,7 @@ function svgString2Image(svgString, width, height, format, callback) {
   image.src = imgsrc;
 }
 
+// save as txt
 const saveToTxt = document.querySelector("#saveToTxt");
 saveToTxt.addEventListener("click", saveToText);
 
@@ -610,6 +636,10 @@ function saveToText() {
   anchor.click();
   document.body.removeChild(anchor);
 }
+
+// open txt file
+const opnFile = document.querySelector("#open-file");
+opnFile.addEventListener("click", openFile);
 
 var clickElem = function(elem) {
   // Thx user1601638 on Stack Overflow (6/6/2018 - https://stackoverflow.com/questions/13405129/javascript-create-and-save-file )
@@ -633,6 +663,7 @@ var clickElem = function(elem) {
   );
   elem.dispatchEvent(eventMouse);
 };
+
 var openFile = function(func) {
   var dispFile = function(contents) {
     document.getElementById("text-area").value = contents;
@@ -659,9 +690,7 @@ var openFile = function(func) {
   clickElem(fileInput);
 };
 
-const opnFile = document.querySelector("#open-file");
-opnFile.addEventListener("click", openFile);
-
+// reset textarea
 const newArea = document.querySelector("#new-textarea");
 newArea.addEventListener("click", resetTxtArea);
 
@@ -670,3 +699,7 @@ function resetTxtArea() {
   let event = new Event("keyup");
   txtBox.dispatchEvent(event);
 }
+
+// TODO
+// 1. text fit in rect
+// 2. prevent rect overlap = text overlap

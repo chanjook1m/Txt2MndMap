@@ -30,6 +30,8 @@ body {
   background-color: #ffeaa7;
   height: 100%;
   overflow: hidden;
+  user-select: none;
+  cursor: grab;
 }
 
 .centered {
