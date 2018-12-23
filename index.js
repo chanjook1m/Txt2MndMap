@@ -249,35 +249,23 @@ anchorNode
 anchorNode
   .append("circle")
   .attr("r", 0)
-  .style("fill", "#FFF");
+  .style("fill", "#FFF")
+  .attr("text-anchor", "middle");
 anchorNode
   .append("text")
   .text(function(d, i) {
-    console.log(d);
     return i % 2 == 0 ? "" : d.node.label;
   })
   .call(wrap, 100)
-  .call(getBB)
   //.style("fill", "#d63031")
   .style("font-family", "Lucida Console, Monaco, monospace")
   .style("font-weight", "bold")
   .style("font-size", 15)
-  .style("fill", "black");
-// anchorNode
-//   .insert("rect", "text")
-//   .attr("width", function(d) {
-//     return d.bbox.width + paddingLeftRight;
-//   })
-//   .attr("height", function(d) {
-//     return d.bbox.height + paddingTopBottom;
-//   })
-//   .style("fill", "red");
-
-function getBB(selection) {
-  selection.each(function(d) {
-    d.bbox = this.getBBox();
+  .style("fill", function(d) {
+    return d.node.color;
   });
-}
+
+//anchorNode.insert("rect", "text");
 
 var updateLink = function() {
   this.attr("x1", function(d) {
@@ -326,6 +314,28 @@ force.on("tick", function() {
           "transform",
           "translate(" + shiftX + "," + shiftY + ")"
         );
+        // vis
+        //   .selectAll("rect")
+        //   .attr("x", function(d) {
+        //     return this.parentNode.getBBox().x;
+        //   })
+        //   .attr("y", function(d) {
+        //     return this.parentNode.getBBox().y;
+        //   })
+        //   .attr("width", function(d) {
+        //     if (d.bb.height <= 5) return 0;
+        //     return d.bb.width + paddingLeftRight;
+        //   })
+        //   .attr("height", function(d) {
+        //     if (d.bb.height <= 5) return 0;
+        //     return d.bb.height + paddingTopBottom;
+        //   })
+        //   .attr("fill-opacity", "0.3")
+        //   .style("fill", function(d) {
+        //     return d.node.color;
+        //   });
+
+        //this.childNodes[1].appen;
       }
     }
   });
@@ -474,16 +484,12 @@ txtBox.addEventListener("keyup", function(e) {
       return i % 2 == 0 ? "" : d.node.label;
     })
     .call(wrap, 100)
-    .style("fill", "#d63031")
+    .style("fill", function(d) {
+      return d.node.color;
+    })
     .style("font-family", "Lucida Console, Monaco, monospace")
     .style("font-size", 15)
     .style("font-weight", "bold");
-
-  vis
-    .selectAll("g.anchorNode")
-    .data(force2.nodes())
-    .exit()
-    .remove();
 
   force.on("tick", function() {
     //force.start();
@@ -510,6 +516,26 @@ txtBox.addEventListener("keyup", function(e) {
           "transform",
           "translate(" + shiftX + "," + shiftY + ")"
         );
+        // vis
+        //   .selectAll("rect")
+        //   .attr("x", function(d) {
+        //     return this.parentNode.getBBox().x;
+        //   })
+        //   .attr("y", function(d) {
+        //     return this.parentNode.getBBox().y;
+        //   })
+        //   .attr("width", function(d) {
+        //     if (d.bb.height <= 5) return 0;
+        //     return d.bb.width + paddingLeftRight;
+        //   })
+        //   .attr("height", function(d) {
+        //     if (d.bb.height <= 5) return 0;
+        //     return d.bb.height + paddingTopBottom;
+        //   })
+        //   .attr("fill-opacity", "0.3")
+        //   .style("fill", function(d) {
+        //     return d.node.color;
+        //   });
       }
     });
 
