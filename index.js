@@ -745,6 +745,7 @@ const newArea = document.querySelector("#new-textarea");
 newArea.addEventListener("click", resetTxtArea);
 
 function resetTxtArea() {
+  saveToText();
   txtBox.value = "";
   let event = new Event("keyup");
   txtBox.dispatchEvent(event);
