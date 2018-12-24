@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Force based label placement</title>
+    <title>Txt2MndMap</title>
     <link rel="stylesheet" href="index.css" />
     <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -14,7 +14,7 @@
       <div class="dropdown">
         <button class="dropbtn">Save<i class="fa fa-caret-down"></i></button>
         <div class="dropdown-content">
-          <a href="#" id="saveButton">Save to PNG</a>
+          <a href="#" id="saveToPng">Save to PNG</a>
           <a href="#" id="saveToTxt">Save to TXT</a>
         </div>
       </div>
@@ -24,7 +24,8 @@
     </div>
 
     <div class="split right"></div>
-
-    <script type="text/javascript" charset="utf-8" src="index.js"></script>
+    <script type="module" charset="utf-8" src="open.js"></script>
+    <script type="module" charset="utf-8" src="drag.js"></script>
+    <script type="module" charset="utf-8" src="index.js"></script>
   </body>
 </html>
