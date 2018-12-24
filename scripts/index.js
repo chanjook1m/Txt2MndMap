@@ -166,6 +166,19 @@ function initialize() {
     .attr("width", w)
     .attr("height", h)
     .call(drag)
+    .call(
+      d3.behavior.zoom().on("zoom", function() {
+        svg.attr(
+          "transform",
+          "translate(" +
+            d3.event.translate +
+            ")" +
+            " scale(" +
+            d3.event.scale +
+            ")"
+        );
+      })
+    )
     .append("g");
 }
 
