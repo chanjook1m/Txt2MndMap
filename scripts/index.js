@@ -282,6 +282,7 @@ function setForceLinkNode() {
     .style("fill", function(d) {
       return d.color;
     })
+    .style("opacity", 0.5)
     .style("stroke-width", 3);
   node.call(force.drag);
 }
