@@ -233,7 +233,7 @@ function setNodeLinks() {
       links.push({
         source: i,
         target: targ,
-        weight: Math.random(),
+        weight: nodes[i].num / 10,
         color: nodes[i].color
       });
     }
