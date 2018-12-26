@@ -233,7 +233,8 @@ function setNodeLinks() {
       links.push({
         source: i,
         target: targ,
-        weight: Math.random()
+        weight: Math.random() / 1000,
+        color: nodes[i].color
       });
     }
     //}
@@ -280,7 +281,10 @@ function setForceLinkNode() {
     .enter()
     .append("svg:line")
     .attr("class", "link")
-    .style("stroke", "#CCC");
+    .style("stroke", function(d) {
+      console.log(d);
+      return d.color;
+    });
 
   node = svg.selectAll("g.node").data(force.nodes());
   node.exit().remove();
