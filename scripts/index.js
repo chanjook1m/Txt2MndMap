@@ -233,7 +233,7 @@ function setNodeLinks() {
       links.push({
         source: i,
         target: targ,
-        weight: Math.random() / 1000,
+        weight: Math.random(),
         color: nodes[i].color
       });
     }
@@ -253,8 +253,8 @@ function setForce() {
     .nodes(nodes)
     .links(links)
     .gravity(1)
-    .linkDistance(50)
-    .charge(-3000)
+    .linkDistance(70)
+    .charge(-10000)
     .linkStrength(function(x) {
       return x.weight * 10;
     });
@@ -282,7 +282,7 @@ function setForceLinkNode() {
     .append("svg:line")
     .attr("class", "link")
     .style("stroke", function(d) {
-      console.log(d);
+      //console.log(d);
       return d.color;
     });
 
