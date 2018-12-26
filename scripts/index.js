@@ -58,9 +58,9 @@ txtBox.addEventListener("keydown", function(e) {
     e.preventDefault();
     var start = this.selectionStart;
     var end = this.selectionEnd;
-    var v = this.val();
+    var v = this.value;
     if (start == end) {
-      $(this).val(v.slice(0, start) + "    " + v.slice(start));
+      this.value = v.slice(0, start) + "    " + v.slice(start);
       this.selectionStart = start + 4;
       this.selectionEnd = start + 4;
       return;
@@ -86,7 +86,7 @@ txtBox.addEventListener("keydown", function(e) {
       lines[selectedLines[i]] = "    " + lines[selectedLines[i]];
     }
 
-    this.val(lines.join("\n"));
+    this.value = lines.join("\n");
   }
 });
 txtBox.addEventListener("keypress", function(e) {
