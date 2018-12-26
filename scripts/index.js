@@ -60,9 +60,9 @@ txtBox.addEventListener("keydown", function(e) {
     var end = this.selectionEnd;
     var v = this.value;
     if (start == end) {
-      this.value = v.slice(0, start) + "    " + v.slice(start);
-      this.selectionStart = start + 4;
-      this.selectionEnd = start + 4;
+      this.value = v.slice(0, start) + "  " + v.slice(start);
+      this.selectionStart = start + 2;
+      this.selectionEnd = start + 2;
       return;
     }
 
