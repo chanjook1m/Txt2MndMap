@@ -190,10 +190,12 @@ function saveTxtLineToNode(txtBox, nodes) {
     if (nodes[index]) {
       nodes[index].label = line;
     } else {
-      let color = colors[Math.floor((line.search(/\S/) + 1) / 2)];
+      let num = Math.floor((line.search(/\S/) + 1) / 2);
+      let color = colors[num];
       let node = {
         label: line,
-        color: color
+        color: color,
+        num: num
       };
       nodes.push(node);
     }
@@ -290,7 +292,7 @@ function setForceLinkNode() {
   node
     .append("svg:circle")
     .attr("r", function(d) {
-      return d.weight * 3;
+      return Math.abs(d.num * 3 - 30);
     })
     .style("fill", function(d) {
       return d.color;
