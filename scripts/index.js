@@ -284,7 +284,8 @@ function setForceLinkNode() {
     .style("stroke", function(d) {
       //console.log(d);
       return d.color;
-    });
+    })
+    .style("opacity", 0.5);
 
   node = svg.selectAll("g.node").data(force.nodes());
   node.exit().remove();
@@ -301,7 +302,7 @@ function setForceLinkNode() {
     .style("fill", function(d) {
       return d.color;
     })
-    .style("opacity", 0.5)
+    .style("opacity", 0.2)
     .style("stroke-width", 3);
   node.call(force.drag);
 }
