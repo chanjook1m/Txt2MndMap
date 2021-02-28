@@ -13,13 +13,13 @@ Inspired by [Text2MindMap](https://tobloef.com/text2mindmap/)
 | filename | description |
 | --- | --- |
 | index.html, index.css | Mindmap design |
-| ./scripts/drag.js | Perfrom dragging the whole mindmap field |
-| ./scripts/index.js | Handle events |
-| ./scripts/open.js | Open text file and load it |
-| ./scripts/reset.js | Reset mindmap and save current mindmap |
-| ./scripts/save.js | Save the mindmap into png or text file |
-| ./scripts/setting.js | Set default text |
-| ./scripts/wrap.js | Perform dividing mindmap node |
+| scripts/drag.js | Perfrom dragging the whole mindmap field |
+| scripts/index.js | Handle events |
+| scripts/open.js | Open text file and load it |
+| scripts/reset.js | Reset mindmap and save current mindmap |
+| scripts/save.js | Save the mindmap into png or text file |
+| scripts/setting.js | Set default text |
+| scripts/wrap.js | Perform dividing mindmap node |
 
 ## How to use
 
